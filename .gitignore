@@ -1,0 +1,20 @@
+# PyTorch models
+*.pth
+*.pt
+
+# Datasets
+data/
+datasets/
+
+# Logs
+runs/
+logs/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment
+.venv/
+env/
+
