@@ -3,8 +3,8 @@
 *.pt
 
 # Datasets
-data/
-datasets/
+VOC2007/
+
 
 # Logs
 runs/

@@ -4,9 +4,9 @@ from torch.utils.data import DataLoader
 from utils.getloss import OD_Loss
 
 dataset = VOC_dataset(
-    guide="D:/ml_data/VOCdevkit/VOC2007/ImageSets/Main/val.txt",
-    image_path="D:/ml_data/VOCdevkit/VOC2007/JPEGImages",
-    annotations_path="D:/ml_data/VOCdevkit/VOC2007/Annotations"
+    guide="VOC2007/ImageSets/Main/val.txt",
+    image_path="VOC2007/JPEGImages",
+    annotations_path="VOC2007/Annotations"
 )
 loader = DataLoader(dataset, batch_size=4, shuffle=False)
 device = "cuda"

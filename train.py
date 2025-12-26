@@ -36,12 +36,12 @@ def train(start_epoch,total_epochs,best_val_loss=float('inf')):
 
 
 
-image_path, annotations_path = "D:/ml_data/VOCdevkit/VOC2007/JPEGImages","D:/ml_data/VOCdevkit/VOC2007/Annotations"
+image_path, annotations_path = "VOC2007/JPEGImages","VOC2007/Annotations"
 
 dataset = VOC_dataset(
-    guide="D:/ml_data/VOCdevkit/VOC2007/ImageSets/Main/train.txt",
-    image_path="D:/ml_data/VOCdevkit/VOC2007/JPEGImages",
-    annotations_path="D:/ml_data/VOCdevkit/VOC2007/Annotations"
+    guide="VOC2007/ImageSets/Main/train.txt",
+    image_path="VOC2007/JPEGImages",
+    annotations_path="VOC2007/Annotations"
 )
 
 loader = DataLoader(dataset,batch_size=4, shuffle=True)
