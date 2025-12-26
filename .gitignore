@@ -17,4 +17,6 @@ __pycache__/
 # Environment
 .venv/
 env/
+.idea
 
+.gitignore
