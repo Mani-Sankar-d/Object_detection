@@ -15,3 +15,16 @@ def IOU(pred_bbox, label_bbox):
     union = w_pred*h_pred + w*h - inter
     return inter/(union+1e-6)
 
+def IOU_eval(X1,Y1,X2,Y2, x1,y1,x2,y2):
+    x1_max = torch.max(X1,x1)
+    y1_max = torch.max(Y1,y1)
+    x2_min = torch.min(X2,x2)
+    y2_min = torch.min(Y2,y2)
+    inter_w = torch.clamp(x2_min - x1_max, min=0)
+    inter_h = torch.clamp(y2_min - y1_max, min=0)
+    inter = inter_w * inter_h
+    area1 = (X2 - X1) * (Y2 - Y1)
+    area2 = (x2 - x1) * (y2 - y1)
+    union = area1 + area2 - inter
+
+    return inter/(union+1e-6)

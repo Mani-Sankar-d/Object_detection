@@ -7,10 +7,8 @@ class Model(nn.Module):
     def __init__(self, S=7, num_classes=20):
         super().__init__()
 
-        # -------- Backbone (ResNet18) --------
         resnet = models.resnet18(pretrained=True)
 
-        # remove avgpool + fc
         self.backbone = nn.Sequential(
             resnet.conv1,
             resnet.bn1,
@@ -21,9 +19,7 @@ class Model(nn.Module):
             resnet.layer3,
             resnet.layer4,
         )
-        # output: (B, 512, 7, 7)
 
-        # -------- Detection head --------
         self.head = nn.Sequential(
             nn.Conv2d(512, 256, kernel_size=3, padding=1),
             nn.ReLU(),

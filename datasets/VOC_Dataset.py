@@ -25,13 +25,11 @@ class VOC_dataset(Dataset):
         ann_path = os.path.join(self.annotations_path, img_id + ".xml")
 
         image = Image.open(img_path).convert("RGB").resize((224, 224))
-        label = voc_to_target(xml_path=ann_path)  # shape (S, S, 25)
+        label = voc_to_target(xml_path=ann_path)
 
         label = torch.tensor(label, dtype=torch.float32)
 
-        # ---------- RANDOM HORIZONTAL FLIP ----------
         if random.random() < 0.5:
-            # flip image
             image = image.transpose(Image.FLIP_LEFT_RIGHT)
 
             S = label.shape[0]
@@ -39,7 +37,7 @@ class VOC_dataset(Dataset):
 
             for i in range(S):
                 for j in range(S):
-                    if label[i, j, 4] == 1:  # object present
+                    if label[i, j, 4] == 1:
                         x, y, w, h = label[i, j, 0:4]
                         cls = label[i, j, 5:]
 
@@ -50,8 +48,6 @@ class VOC_dataset(Dataset):
                         new_label[i, new_j, 4] = 1
                         new_label[i, new_j, 5:] = cls
             label = new_label
-        # -------------------------------------------
-
         image = torch.from_numpy(np.array(image)).permute(2, 0, 1).float() / 255.0
         return image, label
 
