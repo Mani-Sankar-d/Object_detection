@@ -7,8 +7,8 @@ from models.model import Model
 from utils.IOU import IOU
 
 # ---------------- CONFIG ----------------
-IMAGE_PATH = "D:/ml_data/VOCdevkit/man.jpg"
-CHECKPOINT = "Object_detection.best_checkpoint.pth"
+IMAGE_PATH = "./VOC2007/JPEGImages/000002.jpg"
+CHECKPOINT = "Object_detection.best_checkpoint_1.pth"
 
 S = 7
 INPUT_SIZE = 224
@@ -28,7 +28,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # ---------- Load model ----------
 model = Model().to(device)
-ckpt = torch.load("Object_detection.best_checkpoint.pth", map_location=device)
+ckpt = torch.load("Object_detection.best_checkpoint_1.pth", map_location=device)
 model.load_state_dict(ckpt["model_state_dict"])
 model.eval()
 
@@ -107,7 +107,7 @@ img_draw = cv2.cvtColor(img_np, cv2.COLOR_RGB2BGR)
 
 for x1, y1, x2, y2, score, cls in final:
     x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
-
+    print(x1, y1, x2, y2, score, cls)
     cv2.rectangle(img_draw, (x1, y1), (x2, y2), (0,255,0), 2)
 
     label = f"{VOC_CLASSES[cls]} {score:.2f}"

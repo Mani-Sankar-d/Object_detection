@@ -8,40 +8,45 @@ VOC_CLASSES = [
 
 import xml.etree.ElementTree as ET
 
+
+# In preprocessing/read_xml.py
 def read_voc_xml(xml_path):
-
     tree = ET.parse(xml_path)
-
     root = tree.getroot()
-
-    W = int(root.find("size/width").text)
-    H = int(root.find("size/height").text)
 
     boxes = []
     labels = []
+    difficult = []  # Add this
 
-    for obj in root.findall("object"):
-        cls_name = obj.find("name").text
-        if cls_name not in VOC_CLASSES:
-            continue
+    size = root.find('size')
+    H = int(size.find('height').text)
+    W = int(size.find('width').text)
 
-        cls_id = VOC_CLASSES.index(cls_name)
-        bb = obj.find("bndbox")
+    for obj in root.findall('object'):
+        # Check if difficult
+        diff = obj.find('difficult')
+        is_difficult = int(diff.text) == 1 if diff is not None else False
+        difficult.append(is_difficult)  # Add this
 
-        xmin = float(bb.find("xmin").text)
-        ymin = float(bb.find("ymin").text)
-        xmax = float(bb.find("xmax").text)
-        ymax = float(bb.find("ymax").text)
+        # Get class label
+        class_name = obj.find('name').text
+        label = VOC_CLASSES.index(class_name)
+        labels.append(label)
 
+        # Get bounding box
+        bbox = obj.find('bndbox')
+        xmin = float(bbox.find('xmin').text)
+        ymin = float(bbox.find('ymin').text)
+        xmax = float(bbox.find('xmax').text)
+        ymax = float(bbox.find('ymax').text)
         boxes.append([xmin, ymin, xmax, ymax])
-        labels.append(cls_id)
 
-    return boxes, labels, H, W
+    return boxes, labels, H, W, difficult  # Add difficult to return
 
 import numpy as np
 
 def voc_to_target(xml_path, S=7, num_classes=20):
-    boxes, labels, H, W = read_voc_xml(xml_path)
+    boxes, labels, H, W,_ = read_voc_xml(xml_path)
 
     target = np.zeros((S, S, 5 + num_classes), dtype=np.float32)
 

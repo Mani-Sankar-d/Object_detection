@@ -36,12 +36,12 @@ def train(start_epoch,total_epochs,best_val_loss=float('inf')):
 
 
 
-image_path, annotations_path = "VOC2007/JPEGImages","VOC2007/Annotations"
+image_path, annotations_path = "VOC2012/JPEGImages","VOC2012/Annotations"
 
 dataset = VOC_dataset(
-    guide="VOC2007/ImageSets/Main/train.txt",
-    image_path="VOC2007/JPEGImages",
-    annotations_path="VOC2007/Annotations"
+    guide="VOC2012/ImageSets/Main/train.txt",
+    image_path="VOC2012/JPEGImages",
+    annotations_path="VOC2012/Annotations"
 )
 
 loader = DataLoader(dataset,batch_size=4, shuffle=True)
@@ -50,7 +50,7 @@ model = Model()
 model = model.to(device)
 optimizer = Adam(model.parameters(), lr=1e-4,weight_decay=1e-4)
 
-model,_,last_epoch,best_val_loss = load_checkpoint("best_checkpoint",model,optimizer)
+model,_,last_epoch,best_val_loss = load_checkpoint("last_checkpoint",model,optimizer)
 for p in model.backbone.parameters():
     p.requires_grad = True
 optimizer = Adam(model.parameters(), lr=1e-5, weight_decay=1e-4)
